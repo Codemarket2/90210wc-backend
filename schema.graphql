@@ -1,0 +1,96 @@
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}
+
+type Query {
+  getPost(id: ID!): Post
+  getQ(id: ID!): Post
+  getAllTests: [Test]
+  getUsersAllTest(id: ID!): [Test]
+
+  getAllTeams: [Menu]
+  getOneTeam(id: ID!): Menu
+
+  getAllIvdrips: [Menu]
+  getOneIvdrip(id: ID!): Menu
+
+  getAllTherapies: [Menu]
+  getOneTherapie(id: ID!): Menu
+
+  getAllServices: [Menu]
+  getOneService(id: ID!): Menu
+}
+
+type Mutation {
+  createOneTeam(slug: String!, title: String!, description: String!): Menu
+  updateOneTeam(id: ID!, slug: String, title: String, description: String): Menu
+  deleteOneTeam(id: ID!): String
+
+  createOneService(slug: String!, title: String!, description: String!): Menu
+  updateOneService(
+    id: ID!
+    slug: String
+    title: String
+    description: String
+  ): Menu
+  deleteOneService(id: ID!): String
+
+  createOneTherapie(slug: String!, title: String!, description: String!): Menu
+  updateOneTherapie(
+    id: ID!
+    slug: String
+    title: String
+    description: String
+  ): Menu
+  deleteOneTherapie(id: ID!): String
+
+  createOneIvdrip(slug: String!, title: String!, description: String!): Menu
+  updateOneIvdrip(
+    id: ID!
+    slug: String
+    title: String
+    description: String
+  ): Menu
+  deleteOneIvdrip(id: ID!): String
+
+  createTest(
+    name: String!
+    keyword: String!
+    city: String!
+    userId: String!
+  ): Test
+  updateTest(id: ID!, userId: String!, status: String!): Test
+  deleteTest(id: ID!): String
+}
+
+type Subscription {
+  teamChange: Menu @aws_subscribe(mutations: ["createTeam", "updateTeam"])
+  testChange(userId: String!): Test
+    @aws_subscribe(mutations: ["createTest", "updateTest"])
+}
+
+type Post {
+  id: ID!
+  author: String!
+  title: String
+  content: String
+  url: String
+}
+
+type Menu {
+  _id: ID!
+  slug: String!
+  title: String!
+  description: String!
+}
+
+type Test {
+  _id: String!
+  name: String!
+  keyword: String!
+  city: String!
+  userId: String!
+  status: String!
+}
