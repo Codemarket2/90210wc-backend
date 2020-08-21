@@ -1,0 +1,158 @@
+demoLamda:
+  component: "@serverless/aws-lambda"
+  inputs:
+    handler: lamda/demo_lamda.handler
+    code: ./
+
+myLambda:
+  component: "@serverless/aws-lambda"
+  inputs:
+    handler: index.handler
+    code: ./
+    env:
+      DATABASE: mongodb+srv://<username>:<password>@cluster0.rm1ir.mongodb.net/beverlyhills?retryWrites=true&w=majority
+
+menuLamda:
+  component: "@serverless/aws-lambda"
+  inputs:
+    handler: lamda/menu.handler
+    env:
+      DATABASE: mongodb+srv://<username>:<password>@cluster0.rm1ir.mongodb.net/beverlyhills?retryWrites=true&w=majority
+    code: ./
+
+myAppSyncApi:
+  component: "@serverless/aws-app-sync"
+  inputs:
+    name: 90210wc-backend
+    # apiId: "w5akzhyg7jfxlbfiqlk2cp2fhy"
+    authenticationType: API_KEY
+    apiKeys:
+      - myApiKey
+
+    # defining your lambda data source
+    dataSources:
+      - type: AWS_LAMBDA
+        name: getPost
+        config:
+          lambdaFunctionArn: ${myLambda.arn}
+      - type: AWS_LAMBDA
+        name: menu
+        config:
+          lambdaFunctionArn: ${menuLamda.arn}
+      - type: AWS_LAMBDA
+        name: demo
+        config:
+          lambdaFunctionArn: ${demoLamda.arn}
+
+    # mapping schema fields to the data source
+    mappingTemplates:
+      - dataSource: getPost
+        type: Query
+        field: getPost
+        request: request-mapping-templates/request.vtl
+        response: response-mapping-templates/response.vtl
+        # Menu
+        # Teams
+      - dataSource: menu
+        type: Query
+        field: getAllTeams
+        request: request-mapping-templates/getAllTeams.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Query
+        field: getOneTeam
+        request: request-mapping-templates/getOneTeam.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: createOneTeam
+        request: request-mapping-templates/createOneTeam.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: updateOneTeam
+        request: request-mapping-templates/updateOneTeam.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: deleteOneTeam
+        request: request-mapping-templates/deleteOneTeam.vtl
+        response: response-mapping-templates/response.vtl
+        # Ivdrip
+      - dataSource: menu
+        type: Query
+        field: getAllIvdrips
+        request: request-mapping-templates/getAllIvdrips.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Query
+        field: getOneIvdrip
+        request: request-mapping-templates/getOneIvdrip.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: createOneIvdrip
+        request: request-mapping-templates/createOneIvdrip.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: updateOneIvdrip
+        request: request-mapping-templates/updateOneIvdrip.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: deleteOneIvdrip
+        request: request-mapping-templates/deleteOneIvdrip.vtl
+        response: response-mapping-templates/response.vtl
+        # Therapie
+      - dataSource: menu
+        type: Query
+        field: getAllTherapies
+        request: request-mapping-templates/getAllTherapies.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Query
+        field: getOneTherapie
+        request: request-mapping-templates/getOneTherapie.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: createOneTherapie
+        request: request-mapping-templates/createOneTherapie.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: updateOneTherapie
+        request: request-mapping-templates/updateOneTherapie.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: deleteOneTherapie
+        request: request-mapping-templates/deleteOneTherapie.vtl
+        response: response-mapping-templates/response.vtl
+        # Service
+      - dataSource: menu
+        type: Query
+        field: getAllServices
+        request: request-mapping-templates/getAllServices.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Query
+        field: getOneService
+        request: request-mapping-templates/getOneService.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: createOneService
+        request: request-mapping-templates/createOneService.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: updateOneService
+        request: request-mapping-templates/updateOneService.vtl
+        response: response-mapping-templates/response.vtl
+      - dataSource: menu
+        type: Mutation
+        field: deleteOneService
+        request: request-mapping-templates/deleteOneService.vtl
+        response: response-mapping-templates/response.vtl
